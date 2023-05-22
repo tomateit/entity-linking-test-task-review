@@ -6,10 +6,15 @@ def read_in_data(dataset_path: Path):
     # return pd.read_json(dataset_path).to_list(orient="records")
     #Reading the test_seen_entities.jsonl file
     data = []
-    with open(dataset_path, "r") as file:
-        for line in file:
+    dataset_content = dataset_path.read_text()
+    n_errors = 0
+    for line in dataset_content.split("\n"):
+        try:
             data.append(json.loads(line.strip()))
-
+        except json.JSONDecodeError:
+            n_errors += 1
+            continue
+    print(f"There were {n_errors} errors of JSON decodning during the conversion process")
     return data
         
 
@@ -118,6 +123,6 @@ def main(dataset_path: Path):
    
   
 if __name__ == "__main__":
-    main(Path("test_unseen_entities.jsonl"))
+    main(Path("test_seen_entities.jsonl"))
     # import typer
     # typer.run(main)
