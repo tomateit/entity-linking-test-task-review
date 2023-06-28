@@ -1,10 +1,7 @@
 import os
-import unittest
 from converting_data import extract_data_from_jsonl, save_dataframes_to_parquet
 
-
-class TestDataProcessing(unittest.TestCase):
-
+class TestDataProcessing:
     def test_extract_data_from_jsonl(self):
         data = [
             {
@@ -15,15 +12,14 @@ class TestDataProcessing(unittest.TestCase):
                            "non-essential views (ditthis) and not to be clung to.",
                 "mention2entity": {"Middle Way": ["Q833475"]},
                 "entity2type": {"Q833475": ["Q23847174"]}
-
             }
         ]
 
         texts_data, entities_data, mentions_data = extract_data_from_jsonl(data)
 
-        self.assertEqual(len(texts_data), 1)
-        self.assertEqual(len(entities_data), 1)
-        self.assertEqual(len(mentions_data), 1)
+        assert len(texts_data) == 1
+        assert len(entities_data) == 1
+        assert len(mentions_data) == 1
 
     def test_save_dataframes_to_parquet(self):
         texts_data = [{'original_text': 'UwU UwU UwU', 'id': 1}]
@@ -37,12 +33,6 @@ class TestDataProcessing(unittest.TestCase):
 
         save_dataframes_to_parquet(texts_data, entities_data, mentions_data, texts_file, entities_file, mentions_file)
 
-        self.assertTrue(os.path.exists(texts_file))
-        self.assertTrue(os.path.exists(entities_file))
-        self.assertTrue(os.path.exists(mentions_file))
-
-        # Perform further checks if necessary, such as reading and comparing the contents of the Parquet files
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert os.path.exists(texts_file)
+        assert os.path.exists(entities_file)
+        assert os.path.exists(mentions_file)
